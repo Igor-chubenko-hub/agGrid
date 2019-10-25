@@ -105,11 +105,11 @@ export class HomeComponent implements OnInit {
             }
           },
           {
-            name: `Total records: ${params.column.getId()}`,
+            name: `Total records: ${params.columnApi.columnController.gridOptionsWrapper.gridOptions.rowData.length}`,
             action() {}
           },
           {
-            name: `Selected records: ${params.column.getId()}`,
+            name: `Selected records: ${params.api.getSelectedRows().length}`,
             action() {}
           }
         ];
@@ -122,11 +122,11 @@ export class HomeComponent implements OnInit {
             }
           },
           {
-            name: `Total records: ${params.column.getId()}`,
+            name: `Total records: ${params.columnApi.columnController.gridOptionsWrapper.gridOptions.rowData.length}`,
             action() {}
           },
           {
-            name: `Selected records: ${params.column.getId()}`,
+            name: `Selected records: ${params.api.getSelectedRows().length}`,
             action() {}
           }
         ];
