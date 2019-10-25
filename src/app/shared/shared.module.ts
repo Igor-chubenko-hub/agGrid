@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     AgGridModule.withComponents([]),
-    HttpClientModule
+    HttpClientModule,
   ],
   exports: [
     CommonModule,

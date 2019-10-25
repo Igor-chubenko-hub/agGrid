@@ -1,9 +1,13 @@
-<div class="container">
-  <ag-grid-angular
-    style="width: 602px; height: 250px;"
-    class="ag-theme-balham"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-  >
-  </ag-grid-angular>
-</div>
+<ag-grid-angular
+  style="width: 100%; height: 100%;"
+  class="ag-theme-balham"
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  [suppressRowClickSelection]="true"
+  [rowSelection]="rowSelection"
+  [postProcessPopup]="postProcessPopup"
+  [getMainMenuItems]="getMainMenuItems"
+  [rowData]="rowData"
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>
