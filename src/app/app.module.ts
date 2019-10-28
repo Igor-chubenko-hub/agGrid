@@ -15,7 +15,8 @@ import { HomeService } from './shared/services/home.service';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ],
   providers: [
     ApiService,

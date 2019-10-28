@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {HomeService} from '../../shared/services/home.service';
+import { Component, OnInit } from '@angular/core';
+import { HomeService } from '../../shared/services/home.service';
 import 'ag-grid-enterprise';
 import * as moment from 'moment';
 
@@ -10,7 +10,7 @@ import * as moment from 'moment';
 })
 export class HomeComponent implements OnInit {
 
-  private columnDefs = [
+  columnDefs = [
     {
       colId: 'checkbox',
       headerCheckboxSelection: true,
@@ -51,10 +51,12 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  private rowData = [];
-  private rowSelection: string;
-  private defaultColDef: {};
-  private postProcessPopup: (params: any) => void;
+  gridApi;
+  gridColumnApi;
+  rowData = [];
+  rowSelection: string;
+  defaultColDef: {};
+  postProcessPopup: (params: any) => void;
 
   constructor(
     private service: HomeService
@@ -84,6 +86,8 @@ export class HomeComponent implements OnInit {
   }
 
   onGridReady(params: any): void {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
     this.service.getGridData().subscribe(data => {
       const arrayData = [];
