@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HomeService } from '../../shared/services/home.service';
+import {Component, OnInit} from '@angular/core';
+import {HomeService} from '../../shared/services/home.service';
 import 'ag-grid-enterprise';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,9 @@ export class HomeComponent implements OnInit {
     {
       headerName: 'Published on',
       field: 'publishedAt',
+      cellRenderer: item => {
+        return moment(item.data.publishedAt).format('YYYY-MMM-DD hh:mm');
+      },
       suppressMenu: true
     },
     {
@@ -48,9 +52,9 @@ export class HomeComponent implements OnInit {
   ];
 
   private rowData = [];
-  private rowSelection;
-  private defaultColDef;
-  private postProcessPopup;
+  private rowSelection: string;
+  private defaultColDef: {};
+  private postProcessPopup: (params: any) => void;
 
   constructor(
     private service: HomeService
@@ -131,6 +135,35 @@ export class HomeComponent implements OnInit {
           }
         ];
       }
+    }
+  }
+
+  getContextMenuItems(params: any): Array<any> {
+    if (params.column.getId() === 'title') {
+      return [
+        'copy',
+        'copyWithHeaders',
+        'paste',
+        'separator',
+        {
+          name: 'Open in new tab',
+          action() {
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            link.href = `https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}`;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        },
+      ];
+    } else {
+      return [
+        'copy',
+        'copyWithHeaders',
+        'paste',
+      ];
     }
   }
 }
