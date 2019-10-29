@@ -61,4 +61,11 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     expect(component.gridApi).toBeTruthy();
   });
+
+  it('the grid cells should be as expected', () => {
+    const appElement = fixture.nativeElement;
+
+    const cellElements = appElement.querySelectorAll('.ag-cell-value');
+    expect(cellElements.length).toEqual(0);
+  });
 });

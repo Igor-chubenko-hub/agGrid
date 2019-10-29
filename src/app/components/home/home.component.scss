@@ -1,0 +1,6 @@
+::ng-deep .ag-tab {
+  display:none !important;
+  &.ag-tab-selected {
+    display: block !important;
+  }
+}

@@ -22,30 +22,29 @@ export class HomeComponent implements OnInit {
     },
     {
       colId: 'thumbnails',
-      autoHeight: true,
       cellRenderer: item => {
         return `<img src="${item.data.title.snippet.thumbnails.default.url}" alt="">`;
-      }
+      },
     },
     {
-      headerName: 'Published on',
       field: 'publishedAt',
+      headerName: 'Published on',
       cellRenderer: item => {
         return moment(item.data.publishedAt).format('YYYY-MMM-DD hh:mm');
       },
       suppressMenu: true
     },
     {
-      headerName: 'Video Title',
       field: 'title',
+      headerName: 'Video Title',
       suppressMenu: true,
       cellRenderer: item => {
         return `<a href="https://www.youtube.com/watch?v=${item.data.title.id.videoId}">${item.data.title.snippet.title}</a>`;
       }
     },
     {
-      headerName: 'Description',
       field: 'description',
+      headerName: 'Description',
       suppressMenu: true,
       cellStyle: {'white-space': 'normal'}
     }
@@ -53,6 +52,7 @@ export class HomeComponent implements OnInit {
 
   gridApi;
   gridColumnApi;
+  getRowHeight;
   rowData = [];
   rowSelection: string;
   defaultColDef: {};
@@ -80,6 +80,9 @@ export class HomeComponent implements OnInit {
         ePopup.style.top = newTop + 'px';
       }
     };
+    this.getRowHeight = params => {
+      return params.data.rowHeight;
+    };
   }
 
   ngOnInit(): void {
@@ -89,16 +92,17 @@ export class HomeComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
+
     this.service.getGridData().subscribe(data => {
       const arrayData = [];
-      data.items.forEach(item => {
-        arrayData.push({
+      this.rowData = data.items.map(item => {
+        return {
           publishedAt: item.snippet.publishedAt,
           title: item,
-          description: item.snippet.description
-        });
+          description: item.snippet.description,
+          rowHeight: item.snippet.thumbnails.default.height
+        };
       });
-      this.rowData = arrayData;
     });
   }
 
