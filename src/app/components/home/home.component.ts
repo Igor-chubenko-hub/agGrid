@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
       field: 'publishedAt',
       headerName: 'Published on',
       cellRenderer: item => {
-        return moment(item.data.publishedAt).format('YYYY-MMM-DD hh:mm');
+        return moment(item.data.publishedAt).local().format('DD-MMM-YYYY hh:mm:ss');
       },
       suppressMenu: true
     },
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
       headerName: 'Video Title',
       suppressMenu: true,
       cellRenderer: item => {
-        return `<a href="https://www.youtube.com/watch?v=${item.data.title.id.videoId}">${item.data.title.snippet.title}</a>`;
+        return `<a href="https://www.youtube.com/watch?v=${item.data.title.id.videoId}" target="_blank">${item.data.title.snippet.title}</a>`;
       }
     },
     {
