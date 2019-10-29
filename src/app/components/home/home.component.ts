@@ -94,7 +94,6 @@ export class HomeComponent implements OnInit {
     params.api.sizeColumnsToFit();
 
     this.service.getGridData().subscribe(data => {
-      const arrayData = [];
       this.rowData = data.items.map(item => {
         return {
           publishedAt: item.snippet.publishedAt,
