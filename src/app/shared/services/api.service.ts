@@ -1,11 +1,6 @@
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-
-export interface Headers {
-  [name: string]: string;
-}
 
 @Injectable()
 export class ApiService {
@@ -13,18 +8,17 @@ export class ApiService {
   constructor(
     private http: HttpClient,
   ) { }
-
   static setHeaders(headerType): any {
-    const headersConf: Headers = {};
-    headersConf['Access-Control-Allow-Origin'] = '*';
-    if (headerType === 'json') {
-      headersConf['Content-Type'] = 'application/json; charset=utf-8';
-    } else if (headerType === 'form') {
-      headersConf['Content-Type'] = 'application/x-www-form-urlencoded';
-    } else if (headerType === 'multipart') {
-      headersConf['Content-Type'] = 'multipart/form-data';
-    }
-    return new HttpHeaders(headersConf);
+    const contentType = {
+      json: 'application/json; charset=utf-8',
+      form: 'application/x-www-form-urlencoded',
+      multipart: 'multipart/form-data',
+    };
+
+    return new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': contentType[headerType]
+    });
   }
 
   static handleError(error: HttpErrorResponse) {
@@ -72,35 +66,5 @@ export class ApiService {
     const headers = ApiService.setHeaders(headerType);
 
     return this.http.delete(path, { headers, responseType : 'text' });
-  }
-
-  upload(path, formData, method = 'post'): any {
-    const headers = ApiService.setHeaders('');
-
-    return this.http[method](path, formData, {
-      reportProgress: true,
-      observe: 'events',
-      headers
-    }).pipe(
-      map((event: any) => {
-        switch (event.type) {
-
-          case HttpEventType.UploadProgress:
-            const progress = Math.round(100 * event.loaded / event.total);
-            return { status: 'progress', message: progress };
-
-          case HttpEventType.Response:
-            return event.body;
-          default:
-            return `Unhandled event: ${event.type}`;
-        }
-      }),
-      catchError(ApiService.handleError)
-    );
-  }
-
-  download(path): Observable<any> {
-    const headers = ApiService.setHeaders('json');
-    return this.http.get(path, { responseType: 'arraybuffer', headers });
   }
 }

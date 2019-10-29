@@ -74,8 +74,7 @@ export class HomeComponent implements OnInit {
         const ePopup = params.ePopup;
         let oldTopStr = ePopup.style.top;
         oldTopStr = oldTopStr.substring(0, oldTopStr.indexOf('px'));
-        // tslint:disable-next-line:radix
-        const oldTop = parseInt(oldTopStr);
+        const oldTop = parseInt(oldTopStr, 10);
         const newTop = oldTop + 25;
         ePopup.style.top = newTop + 'px';
       }
@@ -107,12 +106,11 @@ export class HomeComponent implements OnInit {
 
   getMainMenuItems(params: any): Array<object> {
     if (params.column.getId() === 'thumbnails') {
-      if (params.columnApi.columnController.allDisplayedColumns.length === 4) {
         return [
           {
             name: 'Toggle selection',
             action() {
-              params.columnApi.setColumnVisible('checkbox', true);
+              params.columnApi.setColumnVisible('checkbox', params.columnApi.columnController.allDisplayedColumns.length === 4);
             }
           },
           {
@@ -124,53 +122,21 @@ export class HomeComponent implements OnInit {
             action() {}
           }
         ];
-      } else {
-        return [
-          {
-            name: 'Toggle selection',
-            action() {
-              params.columnApi.setColumnVisible('checkbox', false);
-            }
-          },
-          {
-            name: `Total records: ${params.columnApi.columnController.gridOptionsWrapper.gridOptions.rowData.length}`,
-            action() {}
-          },
-          {
-            name: `Selected records: ${params.api.getSelectedRows().length}`,
-            action() {}
-          }
-        ];
-      }
     }
   }
 
-  getContextMenuItems(params: any): Array<any> {
+  getContextMenuItems(params: any): Array<string | object> {
+    let contextMenuItems: Array<string | object> = ['copy', 'copyWithHeaders', 'paste'];
+    const extendedContextMenu: Array<string | object> = [
+      'separator',
+      {
+        name: `<a href="https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}" target="_blank">Open in new tab</a>`,
+        action() {}
+      }];
     if (params.column.getId() === 'title') {
-      return [
-        'copy',
-        'copyWithHeaders',
-        'paste',
-        'separator',
-        {
-          name: 'Open in new tab',
-          action() {
-            const link = document.createElement('a');
-            link.style.display = 'none';
-            link.href = `https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}`;
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
-        },
-      ];
-    } else {
-      return [
-        'copy',
-        'copyWithHeaders',
-        'paste',
-      ];
+      contextMenuItems = [...contextMenuItems, ...extendedContextMenu];
     }
+
+    return contextMenuItems;
   }
 }

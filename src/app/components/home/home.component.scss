@@ -1,6 +1,17 @@
-::ng-deep .ag-tab {
+:host ::ng-deep .ag-tab {
   display:none !important;
   &.ag-tab-selected {
     display: block !important;
+  }
+}
+
+:host ::ng-deep .ag-theme-balham {
+  .ag-menu {
+    .ag-menu-option-text {
+      a {
+        color: #000 !important;
+        text-decoration: none;
+      }
+    }
   }
 }
